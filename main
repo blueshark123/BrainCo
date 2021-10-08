@@ -1,3 +1,4 @@
+
 // Calculator.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
@@ -78,4 +79,89 @@ void calc::reset()
 float calc::ans()
 {
     return result;
+
+int main()
+{
+    float stnum;
+    float nnum;
+    bool end = true;
+    bool loop = true;
+    float choice;
+
+    cout << "This is a calculator. \n";
+
+    while (loop)
+    {
+        end = true;
+        cout << "\nPlease enter your first number: ";
+        cin >> stnum;
+
+        calc c(&stnum);
+
+        while (end)
+        {
+            cout << "\nPlease enter your next number: ";
+            cin >> nnum;
+            cout << "\nChoose your Operator:";
+            cout << "\n1) add \n2) subtract \n3) multiply \n4) divide \n5) exponent \n6) log base 10 \n7) set result to 0 \n8) reset calculator \n9) end program \n";
+            cin >> choice;
+
+            if (choice == 1)
+            {
+                c.add(&nnum);
+            }
+
+            else if (choice == 2)
+            {
+                float* nptr = &nnum;
+                c.sub(&nptr);
+            }
+
+            else if (choice == 3)
+            {
+                c.mult(nnum);
+            }
+
+            else if (choice == 4)
+            {
+                c.div(&nnum);
+            }
+
+            else if (choice == 5)
+            {
+                c.expon(nnum);
+            }
+
+            else if (choice == 6)
+            {
+                c.logten(nnum);
+            }
+
+            else if (choice == 7)
+            {
+                c.reset();
+            }
+
+            else if (choice == 8)
+            {
+                end = false;
+            }
+
+            else if (choice == 9)
+            {
+                end = false;
+                loop = false;
+            }
+
+            else
+            {
+                cout << "\nIncorrect input. Please Choose again.\n";
+            }
+
+            cout << "Your result is: " << c.ans() << "\n";
+        }
+    }
+
+    cout << "Thank you!";
+
 }
