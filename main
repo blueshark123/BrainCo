@@ -1,3 +1,85 @@
+
+// Calculator.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include <iostream>
+#include <cmath>
+
+using namespace std;
+
+class calc
+{
+public:
+
+    calc();
+    calc(float* num);
+
+    void add(float* num);
+    void sub(float** num);
+    void mult(float& num);
+    void div(float* num);
+    void expon(float num);
+    void logten(float num);
+
+    void reset();
+    float ans();
+
+
+private:
+    float result;
+
+};
+
+calc::calc()
+{
+    result = 0;
+}
+
+calc::calc(float* num)
+{
+    result = *num;
+}
+
+void calc::add(float* num)
+{
+
+    result += *num;
+}
+
+void calc::sub(float** num)
+{
+    float* nptr = *num;
+    result -= *nptr;
+}
+
+void calc::mult(float& num)
+{
+    result *= num;
+}
+
+void calc::div(float* num)
+{
+    result /= *num;
+}
+
+void calc::expon(float num)
+{
+    result = pow(result, num);
+}
+
+void calc::logten(float num)
+{
+    result = log10(result);
+}
+
+void calc::reset()
+{
+    result = 0;
+}
+float calc::ans()
+{
+    return result;
+
 int main()
 {
     float stnum;
@@ -81,4 +163,5 @@ int main()
     }
 
     cout << "Thank you!";
+
 }
