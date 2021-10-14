@@ -1,0 +1,69 @@
+// Arrays, Vectors, Stacks, Queues
+
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <queue>
+
+using namespace std;
+
+int main()
+{
+	//Arrays
+	//Initializing arrays
+	int narray1[64] = {};
+	int narray2[] = { 1,2,3,4 };
+	int narray3[5][4];
+
+	char carray[4] = { 'a', 'b', 'c', 'd' };
+
+	//filling arrays
+	for (int i = 0; i < 64; ++i)
+	{
+		narray1[i] = i * 4;
+	}
+
+	for (int i = 0; i < 64; ++i)
+	{
+		cout << narray1[i];
+	}
+
+	//accessing indices
+	cout << narray2[3] << endl;
+	cout << carray[1] << endl;
+
+	//Vectors
+	//initializing vectors
+	vector<int> vect1;
+	vector<int> vect2(5, 2);
+	vector<int> vect3{ 1,2,3,4,5 };
+
+	//Stacks
+	//initializing stacks
+	stack<int> stack1;
+	stack<int, vector<int>> stack2(vect3);
+
+	//stack functions
+	stack1.push(4);
+	cout << stack2.top() << endl;
+	cout << stack2.size() << endl;
+	stack2.pop();
+	cout << stack2.size() << endl; 
+
+	//Queues
+	//initializing queues
+	queue<int> queue1;
+	queue<int, stack<int>> queue2(stack1);
+
+	//queue functions
+	for (int i = 0; i < 10; i++)
+	{
+		queue1.push(i);
+	}
+
+	cout << queue1.front() << endl;
+	cout << queue1.back() << endl;
+	queue1.pop();
+	cout << queue1.front() << endl;
+
+}
