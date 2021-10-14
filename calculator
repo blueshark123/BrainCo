@@ -1,5 +1,5 @@
 
-// Calculator.cpp : This file contains the 'main' function. Program execution begins and ends there.
+// Simple calculator program
 //
 
 #include <iostream>
@@ -7,6 +7,7 @@
 
 using namespace std;
 
+//Calculator class: contains calculator math functions
 class calc
 {
 public:
@@ -30,56 +31,68 @@ private:
 
 };
 
+//basic constructor
 calc::calc()
 {
     result = 0;
 }
 
+//constructor with existing number
 calc::calc(float* num)
 {
     result = *num;
 }
 
+//adding functions using pointer
 void calc::add(float* num)
 {
 
     result += *num;
 }
 
+//subtracting function using double pointer
 void calc::sub(float** num)
 {
     float* nptr = *num;
     result -= *nptr;
 }
 
+//multiplying function using address
 void calc::mult(float& num)
 {
     result *= num;
 }
 
+//division function
 void calc::div(float* num)
 {
     result /= *num;
 }
 
+//exponent function
 void calc::expon(float num)
 {
     result = pow(result, num);
 }
 
+//log function
 void calc::logten(float num)
 {
     result = log10(result);
 }
 
+//resets calc value to 0
 void calc::reset()
 {
     result = 0;
 }
+
+//returns the calculator value
 float calc::ans()
 {
     return result;
 
+//main function
 int main()
 {
     float stnum;
@@ -89,13 +102,14 @@ int main()
     float choice;
 
     cout << "This is a calculator. \n";
-
+    
     while (loop)
     {
         end = true;
         cout << "\nPlease enter your first number: ";
         cin >> stnum;
-
+            
+        //creates calculator with inputted number
         calc c(&stnum);
 
         while (end)
@@ -105,7 +119,8 @@ int main()
             cout << "\nChoose your Operator:";
             cout << "\n1) add \n2) subtract \n3) multiply \n4) divide \n5) exponent \n6) log base 10 \n7) set result to 0 \n8) reset calculator \n9) end program \n";
             cin >> choice;
-
+            
+            //based on user choice, performs operator on the two given numbers
             if (choice == 1)
             {
                 c.add(&nnum);
@@ -157,7 +172,8 @@ int main()
             {
                 cout << "\nIncorrect input. Please Choose again.\n";
             }
-
+            
+            //outputs results
             cout << "Your result is: " << c.ans() << "\n";
         }
     }
