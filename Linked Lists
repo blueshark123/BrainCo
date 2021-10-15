@@ -1,0 +1,166 @@
+//Linked Lists
+#include <iostream>
+#include <cstdlib>
+
+using namespace std;
+
+//Node class
+template <typename T>
+class node
+{
+public: 
+	T nodeVal; 
+	node<T>* next;
+
+	//constructor with no initial value
+	node() : next(NULL) {}
+
+	//constructor with initial value and next 
+	node(const T& item, node<T>* nextNode = NULL) :
+		nodeVal(item), next(nextNode) {}
+};
+
+//function inserts node at the front
+template <typename T>
+void push(node<T>** head, T data)
+{	
+	//creates new node n with value data and head node as next node
+	node<T>* n = new node<T>(data, *head);
+
+	//defines new head as new node
+	*head = n;
+}
+
+//inserts node after certain position
+template <typename T>
+void insert(node<T>* n, T data)
+{	
+	//if given node is NULL
+	if (n == NULL)
+	{
+		cout << "The linked node can't be NULL";
+		return;
+	}
+
+	//Creates new node with value data and next node n->next
+	node<T>* newnode = new node<T>(data, n->next);
+	//sets n next node as the new node
+	n->next = newnode;
+}
+
+
+
+//add node to the end of the list
+template <typename T>
+void append(node<T>** head, T data)
+{
+	//creates new node n with value data
+	node<T>* n = new node<T>(data);
+	//creates new node last with position head
+	node<T>* last = *head;
+
+	//if the linked list is empty, define head of node as the new node
+	if (*head == NULL)
+	{
+		*head = n;
+		return;
+	}
+
+	//cycles through the list until the end
+	while (last->next != NULL)
+	{
+		last = last->next;
+	}
+
+	//defines the last node as n and links it with list
+	last->next = n;
+	return;
+}
+
+//delete a node from list with the given key
+template <typename T>
+void deleteNode(node<T>** head, int key)
+{
+	//create two nodes, one with the head of list and one empty
+	node<T>* temp = *head;
+	node<T>* prev = NULL;
+
+	//if the head of the node is the selected node 
+	if (temp != NULL && temp->nodeVal == key)
+	{
+		//move the head to the next node and delete the head
+		*head = temp->next;
+		delete temp;
+		return;
+	}
+
+	else
+	{
+		//searches the list for the given node
+		while (temp != NULL && temp->nodeVal != key)
+		{
+			prev = temp;
+			temp = temp->next;
+		}
+
+		//if the key can't be found, exit function
+		if (temp == NULL) return;
+
+		//sets the previous node's next to the deleted node's next
+		prev->next = temp->next;
+
+		//frees memory of node
+		delete temp;
+	}
+}
+
+//given a head node, delete the entire linked list
+template <typename T>
+void deleteList(node<T>** head)
+{
+	node<T>* temp = *head;
+	node<T>* next = NULL;
+
+	//while node isn't empty
+	while (temp != NULL)
+	{
+		//set head node as next node and delete head node;
+		next = temp->next;
+		free(temp);
+		temp = next;
+	}
+
+	*head = NULL;
+}
+template <typename T>
+void printList(node<T>* n)
+{
+	while (n != NULL)
+	{
+		cout << n->nodeVal << " ";
+		n = n->next;
+	}
+}
+
+int main()
+{
+	node<int>* head = new node<int>;
+
+	for (int i = 0; i < 10; ++i)
+	{
+		push(&head, i+1);
+	}
+
+	printList(head);
+
+	insert(head->next->next->next, 47);
+	append(&head, 11);
+	deleteNode(&head, 4);
+
+	printList(head);
+
+	deleteList(&head);
+
+	printList(head);
+
+}
