@@ -91,6 +91,7 @@ void calc::reset()
 float calc::ans()
 {
     return result;
+}
 
 //main function
 int main()
