@@ -1,0 +1,63 @@
+#include <iostream>
+//used for printing tree
+#define COUNT 10
+
+using namespace std;
+
+//tree node class
+template <typename T>
+class node
+{
+public:
+	//contains a value and children nodes
+	T data;
+	node<T>* left;
+	node<T>* right;
+
+	//constructor
+	node(T val)
+	{
+		this->data = val;
+		this->left = NULL;
+		this->right = NULL;
+	}
+};
+
+//given the root node, print the binary tree
+template <typename T>
+void printTree(node<T>* root, int space)
+{
+	//exits if the tree is empty
+	if (root == NULL) return;
+
+	//increases distance between levels
+	space += COUNT;
+
+	//goes through right child first
+	printTree(root->right, space);
+
+	//print current node after space
+	cout << endl;
+	for (int i = COUNT; i < space; i++) cout << " ";
+	cout << root->data << "\n";
+
+	//then goes through left child
+	printTree(root->left, space);
+}
+
+int main()
+{
+	//creating root of tree
+	node<char>* root = new node<char>('A');
+
+	//creating rest of tree
+	root->left = new node<char>('B');
+	root->right = new node<char>('C');
+	root->left->left = new node<char>('D');
+	root->left->right = new node<char>('E');
+	root->right->left = new node<char>('F');
+	root->right->right = new node<char>('G');
+
+	//print out tree
+	printTree(root, 0);
+}
