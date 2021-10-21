@@ -1,0 +1,91 @@
+//Multithread Restaurant Example
+
+#include <iostream>
+#include <mutex>
+#include <condition_variable>
+#include <thread>
+
+using namespace std;
+
+//Restaurant Class
+class Restaurant
+{
+	//Status of restaurant: initial status idle
+	enum class Status { idle, orderTaken, newOrder, ready };
+	Status orderStatus = Status::idle;
+	mutex order;
+	condition_variable orderBell;
+
+public:
+
+	void chef()
+	{
+		unique_lock<mutex> ul(order);
+		cout << "waiting for order!" << endl;
+		//waits for the orderstatus to be newOrder
+		orderBell.wait(ul, [=]() {return orderStatus == Status::newOrder; });
+		//changes orderstatus to ready
+		orderStatus = Status::ready;
+		cout << "food is ready!" << endl;
+		//notifies other threads
+		orderBell.notify_all();
+
+	}
+
+	void waiter()
+	{
+		{
+			unique_lock<mutex> ul(order);
+			cout << "Waiting for Customer" << endl;
+			//waits for customer to order
+			orderBell.wait(ul, [=]() {return orderStatus == Status::orderTaken; });
+			//changes status
+			orderStatus = Status::newOrder;
+			cout << "New order received!" << endl;
+			//notifies all threads
+			orderBell.notify_all();
+		}
+
+		unique_lock<mutex> ul(order);
+		cout << "Waiting for food!" << endl;
+		//waiting for chef to finish cooking
+		orderBell.wait(ul, [=]() {return orderStatus == Status::ready; });
+		//changes status
+		orderStatus = Status::idle;
+		cout << "Food served!" << endl;
+
+	}
+
+	void customer()
+	{
+		unique_lock<mutex> ul(order);
+		cout << "Ready to order!" << endl;
+		//changes status to ordertaken
+		orderStatus = Status::orderTaken;
+		cout << "Waiting to eat food" << endl;
+		//notifies all threads
+		orderBell.notify_all();
+		//waits to receive food from waiter
+		orderBell.wait(ul, [=]() {return orderStatus == Status::idle; });
+		cout << "Thank you for the food!" << endl;
+		
+		//releases mutex
+		ul.unlock();
+	}
+};
+
+int main()
+{
+	//initializing restaurant and threads
+	Restaurant restaurant;
+	thread chef(&Restaurant::chef, ref(restaurant));
+	thread waiter(&Restaurant::waiter, ref(restaurant));
+	thread customer(&Restaurant::customer, ref(restaurant));
+
+	//joins threads
+	chef.join();
+	waiter.join();
+	customer.join();
+
+	return 0;
+}
