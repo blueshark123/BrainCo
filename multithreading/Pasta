@@ -25,7 +25,7 @@ void pasta(int timer, bool& finish)
 }
 
 //Chop Function
-//Prints out menial kitchen tasks every 0.3-1.0 seconds until boolean value is changed
+//Prints out menial kitchen tasks every 0.3-1.0 seconds until boolean value is changed.
 void chop(bool& ready)
 {
 	
