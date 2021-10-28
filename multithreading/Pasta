@@ -1,0 +1,60 @@
+//Multithread Restaurant Example
+
+#include <iostream>
+#include <chrono>
+#include <thread>
+#include <time.h>
+
+using namespace std;
+
+//Pasta Function
+//Given time to cook pasta, displays time remaining until pasta's cooked
+void pasta(int timer, bool& finish)
+{
+	cout << "Ready to cook Pasta!" << endl;
+	int cycles = timer / 5;
+
+	for (int i = 0; i < cycles; ++i)
+	{
+		cout << timer - i * 5 << " seconds left!" << endl;
+		this_thread::sleep_for(chrono::seconds(5));
+	}
+
+	cout << "Pasta's done!" << endl;
+	finish = true;
+}
+
+//Chop Function
+//Prints out menial kitchen tasks every 0.3-1.0 seconds until boolean value is changed
+void chop(bool& ready)
+{
+	
+	while (!ready)
+	{
+		srand(time(NULL));
+		cout << "Chop Chop..." << endl;
+		int n1 = rand() % 1000 + 300;
+		this_thread::sleep_for(chrono::milliseconds(n1));
+		cout << "Stir Stir..." << endl;
+		int n2 = rand() % 1000 + 300;
+		this_thread::sleep_for(chrono::milliseconds(n2));
+	}
+
+	cout << "All done!" << endl;
+}
+
+//main
+int main()
+{
+	bool done = false;
+	int timer = 30;
+  
+  //Creates two threads which run functions pasta and chop concurrently
+	thread tA(pasta, timer, ref(done));
+	thread tB(chop, ref(done));
+
+	tA.join();
+	tB.join();
+
+	return 0;
+}
